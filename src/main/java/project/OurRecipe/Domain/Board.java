@@ -7,11 +7,12 @@ import java.time.LocalDateTime;
 
 @Getter@Setter
 public class Board {
-    private int UserID;
+    private String UserID;
     private int BoardID;
     private String BoardTitle;
     private String BoardContent;
     private boolean BoardAvailable;
     private LocalDateTime WriteTime;
+    private int RecommendCount;
 
 }

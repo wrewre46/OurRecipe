@@ -4,8 +4,9 @@ create table ourrecipe.board
     BoardID int ,
     BoardTitle VARCHAR(200) NOT NULL,
     BoardContent VARCHAR(2048) NOT NULL,
-    BoardAvailable bit default 1,
-    WriteTime datetime,
+    BoardAvailable int default 1,
+    WriteDate date,
+    WriteTime time,
     RecommendCount int default 0,
     primary key(BoardID)
 );

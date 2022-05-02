@@ -1,0 +1,52 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+    <Title>OurRecipe Board</Title>
+</head>
+<body>
+<div class="container">
+    <div class="py-5 text-center">
+        <h2>게시물</h2>
+    </div>
+    <div>
+        <label for="BoardTitle">글 제목</label>
+        <input type="text" id="BoardTitle" name="BoardTitle" th:value="${board.BoardTitle}" class="form-control" readonly>
+    </div>
+    <div>
+        <label for="MemberID">작성자</label>
+        <input type="text" id="MemberID" name="MemberID" th:value="${board.MemberID}" class="form-control" readonly>
+    </div>
+    <div>
+        <label for="WriteDate">작성일</label>
+        <input type="text" id="WriteDate" name="WriteDate" th:value="${board.WriteDate}"class="form-control" readonly>
+    </div>
+    <div>
+        <label for="WriteTime">작성 시간</label>
+        <input type="text" id="WriteTime" name="WriteTime" th:value="${board.WriteTime}" class="form-control" readonly>
+    </div>
+    <div>
+        <label for="BoardContent">글 내용</label>
+        <textarea type="text" id="BoardContent" name="BoardContent"  style="height:400px;"
+                  th:text="${board.BoardContent}"  class="form-control" readonly></textarea>
+
+
+    </div>
+    <hr class="my-4">
+    <div class="row">
+        <div class="col">
+            <button class="w-100 btn btn-primary btn-lg"
+                    th:onclick="|location.href='@{/boards/{BoardID}/edit(BoardID=${board.BoardID})}'|"
+                    type="button">수정하기</button>
+        </div>
+        <div class="col">
+            <button class="w-100 btn btn-secondary btn-lg"
+                    th:onclick="|location.href='@{/boards}'|"
+                    type="button">목록으로</button>
+        </div>
+    </div>
+
+</div> <!-- /container -->
+</body>
+</html>

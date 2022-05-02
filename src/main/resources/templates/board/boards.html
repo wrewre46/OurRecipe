@@ -1,0 +1,28 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+    <Title>OurRecipe Board</Title>
+</head>
+<body>
+<span>게시판 List</span><br>
+<tbody>
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <button class="btn btn-primary float-end"
+                    th:onclick="|location.href='@{/boards/write}'|"
+                    type="button">글쓰기</button>
+        </div>
+    </div>
+    <tr th:each="board : ${boards}">
+        <td><a th:href="@{/boards/{BoardID}(BoardID=${board.BoardID})}" th:text="${board.BoardID}">게시물 ID</a></td>
+        <td><a th:href="@{/boards/{BoardID}(BoardID=${board.BoardID})}" th:text="${board.BoardTitle}">게시물 이름</a></td>
+        <br>
+    </tr>
+</div>
+</tbody>
+
+</body>
+</html>

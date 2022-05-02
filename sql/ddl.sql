@@ -1,6 +1,6 @@
 create table ourrecipe.board
 (
-    UserID VARCHAR(20) NOT NULL,
+    MemberID VARCHAR(20) NOT NULL,
     BoardID int ,
     BoardTitle VARCHAR(200) NOT NULL,
     BoardContent VARCHAR(2048) NOT NULL,
@@ -9,4 +9,20 @@ create table ourrecipe.board
     WriteTime time,
     RecommendCount int default 0,
     primary key(BoardID)
+);
+
+create table ourrecipe.member
+(
+    ID int,
+    MemberID Varchar(2048) not null,
+    Password Varchar(2048) not null,
+    Email varchar(30),
+    Nickname varchar(30),
+    Role varchar(20) not null,
+    Provider varchar(20),
+    ProviderID varchar(2048),
+    MemberCreateDate date,
+    MemberCreateTime time,
+    primary key(ID)
+
 );

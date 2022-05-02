@@ -15,9 +15,9 @@ public class BoardRepository {
         this.jdbcTemplate = jdbcTemplate;
     }
     public int BoardSave(Board board){
-        String sql = "insert into Board(UserID, BoardID, BoardTitle, BoardContent,WriteDate,WriteTime) values (?,?,?,?,?,?)";
+        String sql = "insert into Board(MemberID, BoardID, BoardTitle, BoardContent,WriteDate,WriteTime) values (?,?,?,?,?,?)";
         return jdbcTemplate.update(
-                sql,board.getUserID(),
+                sql,board.getMemberID(),
                 board.getBoardID(),
                 board.getBoardTitle(),
                 board.getBoardContent(),
@@ -48,7 +48,7 @@ public class BoardRepository {
     }
     private RowMapper<Board> BoardRowMapper() {
         return (rs, rowNum) -> {
-            Board board = new Board(rs.getString("UserID"),
+            Board board = new Board(rs.getString("MemberID"),
                     rs.getInt("BoardID"),
                     rs.getString("BoardTitle"),
                     rs.getString("BoardContent"),

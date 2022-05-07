@@ -1,6 +1,7 @@
 create table ourrecipe.board
 (
     MemberID VARCHAR(20) NOT NULL,
+    MemberNickname varchar(20) ,
     BoardID int ,
     BoardTitle VARCHAR(200) NOT NULL,
     BoardContent VARCHAR(2048) NOT NULL,

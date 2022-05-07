@@ -1,6 +1,8 @@
 <!DOCTYPE HTML>
-<html xmlns:th="http://www.thymeleaf.org">
-<head>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head th:replace="fragments/header :: header">
     <meta charset="utf-8">
     <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
     <Title>OurRecipe Board</Title>
@@ -36,17 +38,20 @@
     <hr class="my-4">
     <div class="row">
         <div class="col">
-            <button class="w-100 btn btn-primary btn-lg"
+            <button
+                    th:if="${board.MemberID} == ${member.MemberID}"
+                    class="w-100 btn btn-primary btn-lg"
                     th:onclick="|location.href='@{/boards/{BoardID}/edit(BoardID=${board.BoardID})}'|"
                     type="button">수정하기</button>
         </div>
         <div class="col">
             <button class="w-100 btn btn-secondary btn-lg"
                     th:onclick="|location.href='@{/boards}'|"
-                    type="button">목록으로</button>
+                    type="button">목록으로</button><br><br>
         </div>
-    </div>
 
+    </div>
 </div> <!-- /container -->
 </body>
+<footer th:replace="fragments/footer :: footer"></footer>
 </html>

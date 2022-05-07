@@ -9,14 +9,12 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import project.OurRecipe.Config.Auth.PrincipalDetails;
 import project.OurRecipe.Domain.Member;
 import project.OurRecipe.Repository.MemberRepository;
 
+import javax.servlet.http.HttpServletRequest;
 import java.sql.Date;
 import java.sql.Time;
 import java.time.LocalDate;
@@ -55,7 +53,7 @@ public class LoginController {
 		return "user";
 	}
 	@GetMapping("/admin")
-	public @ResponseBody String admin() {
+	public String admin() {
 		return "admin";
 	}
 	@GetMapping("/manager")
@@ -63,46 +61,37 @@ public class LoginController {
 		return "manager";
 	}
 	
-	@GetMapping("/loginForm")
-	public String loginForm() {
+	@GetMapping("/login")
+	public String loginForm(HttpServletRequest request) {
+		String uri = request.getHeader("Referer");
+		if (!uri.contains("/login")) {
+			request.getSession().setAttribute("prevPage",
+					request.getHeader("Referer"));
+		}
 		return "login/loginForm";
 	}
-	@GetMapping("/joinForm")
+	@GetMapping("/join")
 	public String joinForm() {
 		return "login/joinForm";
 	}
 	@PostMapping("/join")
-	public String join(@RequestParam String MemberID,
-					   @RequestParam String Password,
-					   @RequestParam String Email,
-					   @RequestParam String Nickname) {
-		Member member = new Member(
-				memberRepository.MemberCount()+1,
-				MemberID,
-				Password,
-				Email,
-				Nickname,
-				"ROLE_USER",
-				null,null,
-				Date.valueOf(LocalDate.now()),
-				Time.valueOf(LocalTime.now()));
+	public String join(@ModelAttribute Member member) {
+		member.setID(memberRepository.MemberCount()+1);
+		member.setRole("ROLE_USER");
+		member.setMemberCreateDate(Date.valueOf(LocalDate.now()));
+		member.setMemberCreateTime(Time.valueOf(LocalTime.now()));
 		String rawPassword=member.getPassword();
 		String encPassword = bCryptPasswordEncoder.encode(rawPassword);
 		member.setPassword(encPassword);
 		memberRepository.MemberSave(member);
-		return "redirect:/loginForm";
+		return "redirect:/login";
 	}
 	@Secured("ROLE_ADMIN")//접근 권한 없으면 이 함수를 실행시킬 수 없다.
 	@GetMapping("/info")
 	public @ResponseBody String info() {
 		return "개인정보";
 	}
-	
-	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	@GetMapping("/data")
-	public @ResponseBody String data() {
-		return "data 정보";
-	}
+
 }
 
 

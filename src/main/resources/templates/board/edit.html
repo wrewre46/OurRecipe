@@ -1,6 +1,8 @@
 <!DOCTYPE HTML>
-<html xmlns:th="http://www.thymeleaf.org">
-<head>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head th:replace="fragments/header :: header">
     <meta charset="utf-8">
     <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
     <Title>OurRecipe Board</Title>
@@ -33,15 +35,13 @@
             <div class="col">
                 <button class="w-100 btn btn-secondary btn-lg"
                         th:onclick="|location.href='@{/boards/{BoardID}(BoardID=${board.BoardID})}'|"
-                        type="button">취소</button>
+                        type="button">취소</button><br><br>
             </div>
         </div>
-
-
     </form>
-
-
+    <!-- Footer-->
 
 </div>
 </body>
+<footer th:replace="fragments/footer :: footer"></footer>
 </html>

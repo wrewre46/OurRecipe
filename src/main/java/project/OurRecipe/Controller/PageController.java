@@ -28,15 +28,15 @@ public class PageController {
             NowPage=1;
             return "redirect:/boards/page=1";
         }
-        if(NowPage>TotalPage) {
-            NowPage=TotalPage;
-        }
+        if(NowPage>TotalPage)NowPage=TotalPage;
+        log.info("NowPage={}", NowPage);
         Page page = new Page(NowPage,TotalPage);
         for(int i = page.getStartPage(); i<=page.getEndPage();i++){
             PageBlock.add(i);
         }
-
         List<Board> boards = pageRepository.BoardsPerPage(page.getNowPage());
+        log.info("getPrevPage={}",page.getPrevPage());
+        log.info("getNextPage={}",page.getNextPage());
         model.addAttribute("Page",page);
         model.addAttribute("PageBlock",PageBlock);
         model.addAttribute("boards",boards);

@@ -3,12 +3,14 @@ package project.OurRecipe.Domain;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.stereotype.Component;
 
 import java.sql.Date;
 import java.sql.Time;
 
 @Data
 @NoArgsConstructor
+@Component
 public class Member {
     private int ID;
     private String MemberID;

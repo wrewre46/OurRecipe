@@ -1,18 +1,31 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
-<meta charset="UTF-8">
-<title>회원가입 페이지</title>
+	<header th:replace="fragments/header :: header"></header>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>회원가입 페이지</title>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.min.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
+	<link th:href="@{/css/login_styles.css}" rel="stylesheet" />
 </head>
+
 <body>
-<h1>회원가입 페이지</h1><hr/>
-<form action ='/join' method = "POST">
-	<input type ="text" name="MemberID" placeholder="MemberID"/><br>
-	<input type ="password" name="Password" placeholder="Password"/><br>
-	<input type ="email" name="Email" placeholder="Email"/><br>
-	<input type ="text" name="Nickname" placeholder="Nickname"/><br>
-	<button>회원가입</button>	
-</form>
-<button onclick="location.href='/'">메인</button>
+<div class="login-clean">
+	<form action="/join" method="post">
+		<h2 class="sr-only">Login Form</h2>
+		<div class="illustration"><i class="icon ion-ios-navigate"></i></div>
+		<div class="form-group"><input class="form-control" type="text" name="MemberID" placeholder="아이디"></div>
+		<div class="form-group"><input class="form-control" type="Password" name="Password" placeholder="비밀번호"></div>
+		<div class="form-group"><input class="form-control" type="Email" name="Email" placeholder="E-mail"></div>
+		<div class="form-group"><input class="form-control" type="text" name="Nickname" placeholder="닉네임"></div>
+		<div class="form-group"><button class="btn btn-primary btn-block" type="submit">Join !</button></div>
+
+	</form>
+
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/js/bootstrap.bundle.min.js"></script>
 </body>
+<footer th:replace="fragments/footer :: footer"></footer>
 </html>

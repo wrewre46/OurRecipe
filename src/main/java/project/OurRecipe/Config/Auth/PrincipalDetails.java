@@ -4,11 +4,13 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;
 
+import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 
 import lombok.Data;
+import org.springframework.stereotype.Component;
 import project.OurRecipe.Domain.Member;
 
 //시큐리티가 /login 주소 요청이 오면 낚아채서 로그인을 진행시킨다.
@@ -21,17 +23,20 @@ import project.OurRecipe.Domain.Member;
 //OAuth로 로그인하면 OAuth2User로 리턴이 오기때문에 PrincipalDetails에서 인터페이스로 받아서 상황에 따라 Authentication에 객체로
 //받게 해줄 수 있다.
 @Data
+@Component
+@NoArgsConstructor
 public class PrincipalDetails implements UserDetails, OAuth2User{
 	private Member member;
 	private Map<String, Object> attributes;
 	public PrincipalDetails(Member member) {
 		this.member = member;
+		System.out.println(member.getMemberID());
+		System.out.println(member.getNickname());
 	}
 	public PrincipalDetails(Member member, Map<String, Object> attributes) {
 		this.member = member;
 		this.attributes=attributes;
 	}
-	
 	//해당 Member의 권한을 리턴하는 곳
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {

@@ -4,17 +4,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
-import project.OurRecipe.Domain.Board;
 import project.OurRecipe.Domain.Member;
 
-import java.sql.Date;
-import java.sql.Time;
 import java.util.List;
 import java.util.Optional;
 
 @Repository
 public class MemberRepository {
     @Autowired private JdbcTemplate jdbcTemplate;
+
     public int MemberSave(Member member){
         String sql = "insert into Member(ID, MemberID," +
                 " Password, Email, Nickname, Role," +

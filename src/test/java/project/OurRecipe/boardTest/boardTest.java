@@ -5,7 +5,9 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import project.OurRecipe.Domain.Board;
+import project.OurRecipe.Domain.Page;
 import project.OurRecipe.Repository.BoardRepository;
+import project.OurRecipe.Repository.PageRepository;
 
 import java.sql.Date;
 import java.sql.Time;
@@ -17,16 +19,8 @@ import java.util.List;
 @SpringBootTest
 public class boardTest {
     @Autowired BoardRepository boardRepository;
-    @Test
-    public void saveTEST() {
-        Board board = new Board("kim2",
-                boardRepository.BoardCount()+1,
-                "hello1",
-                "hello test2",
-                Date.valueOf(LocalDate.now()),
-                Time.valueOf(LocalTime.now()));
-        boardRepository.BoardSave(board);
-    }
+    @Autowired
+    PageRepository pageRepository;
 
     @Test
     public void findAllTest(){
@@ -43,5 +37,25 @@ public class boardTest {
             System.out.println();
         }
 
+    }
+    @Test
+    void pageboards(){
+        Page page = new Page();
+        page.setNowPage(2);
+        List<Board> board = pageRepository.BoardsPerPage(page.getNowPage());
+        for (Board board1 : board) {
+            System.out.print(board1.getBoardID()+" ");
+            System.out.print(board1.getBoardTitle()+" ");
+            System.out.print(board1.getBoardContent()+" ");
+            System.out.println();
+
+        }
+    }
+    @Test
+    void PageBlockTest(){
+        System.out.println(pageRepository.TotalBoards());
+        Page page = new Page(1,pageRepository.TotalBoards()/8 + 1);
+        System.out.println("StartPage : " + page.getStartPage());
+        System.out.println("EndPage : " + page.getEndPage());
     }
 }

@@ -1,5 +1,6 @@
 package project.OurRecipe.Repository;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -9,15 +10,13 @@ import java.util.List;
 
 @Repository
 public class BoardRepository {
-    private final JdbcTemplate jdbcTemplate;
+    @Autowired private JdbcTemplate jdbcTemplate;
 
-    public BoardRepository(JdbcTemplate jdbcTemplate) {
-        this.jdbcTemplate = jdbcTemplate;
-    }
     public int BoardSave(Board board){
-        String sql = "insert into Board(MemberID, BoardID, BoardTitle, BoardContent,WriteDate,WriteTime) values (?,?,?,?,?,?)";
+        String sql = "insert into Board(MemberID,MemberNickname, BoardID, BoardTitle, BoardContent,WriteDate,WriteTime) values (?,?,?,?,?,?,?)";
         return jdbcTemplate.update(
                 sql,board.getMemberID(),
+                board.getMemberNickname(),
                 board.getBoardID(),
                 board.getBoardTitle(),
                 board.getBoardContent(),
@@ -30,7 +29,7 @@ public class BoardRepository {
     }
 
     public List<Board> findAll(){
-        return jdbcTemplate.query("select * from board", BoardRowMapper());
+        return jdbcTemplate.query("select * from board ", BoardRowMapper());
     }
     public Board findByBoardID(int BoardID){
         String sql = "select * from board where BoardID = ?";
@@ -49,6 +48,7 @@ public class BoardRepository {
     private RowMapper<Board> BoardRowMapper() {
         return (rs, rowNum) -> {
             Board board = new Board(rs.getString("MemberID"),
+                    rs.getString("MemberNickname"),
                     rs.getInt("BoardID"),
                     rs.getString("BoardTitle"),
                     rs.getString("BoardContent"),

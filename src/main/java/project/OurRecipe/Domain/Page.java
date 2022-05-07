@@ -21,7 +21,7 @@ public class Page {
         this.NowPage = nowPage;
         this.TotalPage = totalPage;
         StartPage = 5*((int) Math.ceil((double) NowPage/5)-1)+1;
-        EndPage = StartPage+5;
+        EndPage = StartPage+4;
         if(EndPage>TotalPage) EndPage = totalPage;
 
 

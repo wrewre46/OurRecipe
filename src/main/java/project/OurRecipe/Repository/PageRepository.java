@@ -22,6 +22,10 @@ public class PageRepository {
         String sql="select count(*) from board where BoardAvailable = 1";
         return jdbcTemplate.queryForObject(sql,Integer.class);
     }
+    public int FindPage(int BoardID){
+        String sql="select count(BoardID) from board where BoardAvailable=1 AND BoardID > ? ORDER BY BoardID DESC";
+        return jdbcTemplate.queryForObject(sql,Integer.class,BoardID);
+    }
     public List<Board> BoardsPerPage(int NowPage){
         String sql ="select * from board where BoardAvailable = 1 ORDER BY BoardID DESC LIMIT 8 OFFSET ?";
         return jdbcTemplate.query(sql,BoardRowMapper(),8*NowPage-8);

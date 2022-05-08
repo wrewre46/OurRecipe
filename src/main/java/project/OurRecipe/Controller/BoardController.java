@@ -2,6 +2,7 @@ package project.OurRecipe.Controller;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -50,24 +51,25 @@ public class BoardController {
         return "board/boards";
     }
     @GetMapping("/{BoardID}")
-    public String board(@PathVariable int BoardID,Page page,Model model,@AuthenticationPrincipal PrincipalDetails principalDetails){
+    public String board(@PathVariable int BoardID,Model model,@AuthenticationPrincipal PrincipalDetails principalDetails){
+        int Page = (int)Math.ceil((double)(pageRepository.FindPage(BoardID)/8))+1;
         try{
-            log.info("getNowPage()={}",page.getNowPage());
             Member member = principalDetails.getMember();
-            log.info("getMemberID={}",member.getMemberID());
             Board board = boardRepository.findByBoardID(BoardID);
+            model.addAttribute("page",Page);
             model.addAttribute("board", board);
             model.addAttribute("member",member);
             return "board/board";
         }catch (Exception E){
-            log.info("getNowPage()={}",page.getNowPage());
             Member member =new Member();
             Board board = boardRepository.findByBoardID(BoardID);
+            model.addAttribute("page",Page);
             model.addAttribute("board", board);
             model.addAttribute("member",member);
             return "board/board";
         }
     }
+    @Secured("ROLE_USER")
     @GetMapping("/write")
     public String BoardWrite(Model model){
         model.addAttribute("board",new Board());
@@ -104,6 +106,7 @@ public class BoardController {
         }
         else return "error";
     }
+    @Secured("ROLE_USER")
     @PostMapping("/{BoardID}/edit")
     public String BoardEdit(@PathVariable int BoardID,
                             @RequestParam String BoardTitle,

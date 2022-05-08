@@ -68,10 +68,8 @@
                 </div>
                 <div sec:authorize="isAnonymous()">
                     <button class="btn btn-primary float-end"
-                            th:onclick="alert('로그인이 필요합니다.'); location.href='/login';"
+                            th:onclick="alert('로그인이 필요합니다.'); location.href='/boards/write';"
                             type="button">글쓰기</button>
-<!--                            th:onclick="|location.href='@{/login}'|"-->
-
                 </div>
             </div>
 

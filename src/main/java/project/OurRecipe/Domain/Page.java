@@ -4,10 +4,12 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import project.OurRecipe.Repository.PageRepository;
 
 @Getter@Setter
 @NoArgsConstructor
+@Component
 public class Page {
     @Autowired PageRepository pageRepository;
     private int NowPage;
@@ -29,8 +31,5 @@ public class Page {
         if(NextPage>TotalPage) NextPage=totalPage;
         //PageBlock을 위한 조건문
         if(EndPage>TotalPage) EndPage = totalPage;
-
-
-
     }
 }

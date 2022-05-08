@@ -48,12 +48,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 		.and()
 			.oauth2Login()
-			.loginPage("/login").successHandler(userLoginSuccessHandler) //구글 로그인이 완료된 뒤의 후처리 필요.
+			.loginPage("/login").successHandler(userLoginSuccessHandler)
+				//구글 로그인이 완료된 뒤의 후처리 필요.
 			//1. 코드받기(인증), 2. 엑세스 토큰 받음(권한이 생김), 3.사용자프로필 정보를 가져와서 
 		    //4. 그 정보를 토대로 회원가입을 자동으로 진행시키기도 한다. 또는, 그 정보가 부족하면 추가적인 회원가입 창이 나와서 회원가입을 진행해야한다.
 		    //Tip. (구글)코드를 받는게 아니라 엑세스토큰+사용자 프로필 정보를 받는다
 			.userInfoEndpoint()
 			.userService(principalOauth2UserService);
+
 		
 	}
 }

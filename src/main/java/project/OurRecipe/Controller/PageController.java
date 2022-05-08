@@ -21,7 +21,6 @@ public class PageController {
     @Autowired PageRepository pageRepository;
     @GetMapping("/boards/page={NowPage}")
     public String page(@PathVariable int NowPage, Board board,Model model){
-        log.info("NowPage={}", NowPage);
         List<Integer> PageBlock = new ArrayList<>();
         int TotalPage = pageRepository.TotalBoards()/8+1;
         if(NowPage<1) {
@@ -29,19 +28,14 @@ public class PageController {
             return "redirect:/boards/page=1";
         }
         if(NowPage>TotalPage)NowPage=TotalPage;
-        log.info("NowPage={}", NowPage);
         Page page = new Page(NowPage,TotalPage);
         for(int i = page.getStartPage(); i<=page.getEndPage();i++){
             PageBlock.add(i);
         }
         List<Board> boards = pageRepository.BoardsPerPage(page.getNowPage());
-        log.info("getPrevPage={}",page.getPrevPage());
-        log.info("getNextPage={}",page.getNextPage());
         model.addAttribute("Page",page);
         model.addAttribute("PageBlock",PageBlock);
         model.addAttribute("boards",boards);
-
-        log.info("getTotalPage()={}", page.getTotalPage());
         return "board/boards";
     }
 }

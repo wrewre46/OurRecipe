@@ -30,8 +30,6 @@ public class PrincipalDetails implements UserDetails, OAuth2User{
 	private Map<String, Object> attributes;
 	public PrincipalDetails(Member member) {
 		this.member = member;
-		System.out.println(member.getMemberID());
-		System.out.println(member.getNickname());
 	}
 	public PrincipalDetails(Member member, Map<String, Object> attributes) {
 		this.member = member;

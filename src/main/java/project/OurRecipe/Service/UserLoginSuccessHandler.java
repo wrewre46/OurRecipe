@@ -42,9 +42,11 @@ public class UserLoginSuccessHandler implements AuthenticationSuccessHandler {
         if (savedRequest != null) {
             uri = savedRequest.getRedirectUrl();
 
+
             // ""가 아니라면 직접 로그인 페이지로 접속한 것
         } else if (prevPage != null && !prevPage.equals("")) {
             uri = prevPage;
+
         }
         if(uri.equals("http://localhost:8080/join")) uri="http://localhost:8080";
         // 세 가지 케이스에 따른 URI 주소로 리다이렉트

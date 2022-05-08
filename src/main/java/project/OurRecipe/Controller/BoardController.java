@@ -8,7 +8,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import project.OurRecipe.Config.Auth.PrincipalDetails;
-import project.OurRecipe.Config.Auth.PrincipalDetailsService;
 import project.OurRecipe.Domain.Board;
 import project.OurRecipe.Domain.Member;
 import project.OurRecipe.Domain.Page;
@@ -16,6 +15,8 @@ import project.OurRecipe.Repository.BoardRepository;
 import project.OurRecipe.Repository.MemberRepository;
 import project.OurRecipe.Repository.PageRepository;
 
+import javax.annotation.security.PermitAll;
+import java.security.Principal;
 import java.sql.Date;
 import java.sql.Time;
 import java.time.LocalDate;
@@ -29,6 +30,12 @@ public class BoardController {
     @Autowired private BoardRepository boardRepository;
     @Autowired private PageRepository pageRepository;
     @Autowired private MemberRepository memberRepository;
+
+    @GetMapping("/username")
+    @ResponseBody
+    public String currentUserName(Principal principal) {
+        return principal.getName();
+    }
     @GetMapping()
     public String Boards(Model model){
         List<Integer> PageBlock = new ArrayList<>();
@@ -43,13 +50,23 @@ public class BoardController {
         return "board/boards";
     }
     @GetMapping("/{BoardID}")
-    public String board(@PathVariable int BoardID, Model model, @AuthenticationPrincipal PrincipalDetails userDetails){
-        Member member = userDetails.getMember();
-        Board board = boardRepository.findByBoardID(BoardID);
-        model.addAttribute("member",member);
-        model.addAttribute("board", board);
-        return "board/board";
-
+    public String board(@PathVariable int BoardID,Page page,Model model,@AuthenticationPrincipal PrincipalDetails principalDetails){
+        try{
+            log.info("getNowPage()={}",page.getNowPage());
+            Member member = principalDetails.getMember();
+            log.info("getMemberID={}",member.getMemberID());
+            Board board = boardRepository.findByBoardID(BoardID);
+            model.addAttribute("board", board);
+            model.addAttribute("member",member);
+            return "board/board";
+        }catch (Exception E){
+            log.info("getNowPage()={}",page.getNowPage());
+            Member member =new Member();
+            Board board = boardRepository.findByBoardID(BoardID);
+            model.addAttribute("board", board);
+            model.addAttribute("member",member);
+            return "board/board";
+        }
     }
     @GetMapping("/write")
     public String BoardWrite(Model model){
@@ -60,8 +77,8 @@ public class BoardController {
     public String BoardWrite(@RequestParam String BoardTitle,
                            @RequestParam String BoardContent,
                            Model model, RedirectAttributes redirectAttributes,
-                             @AuthenticationPrincipal PrincipalDetails userDetails){
-        Member member = userDetails.getMember();
+                             @AuthenticationPrincipal PrincipalDetails principalDetails){
+        Member member = principalDetails.getMember();
         log.info("MemberID={}",member.getMemberID());
         Board board = new Board(member.getMemberID(),
                                 member.getNickname(),
@@ -77,8 +94,8 @@ public class BoardController {
     }
 
     @GetMapping("/{BoardID}/edit")
-    public String BoardEdit(@PathVariable int BoardID, Model model, @AuthenticationPrincipal PrincipalDetails userDetails){
-        Member member = userDetails.getMember();
+    public String BoardEdit(@PathVariable int BoardID, Model model, @AuthenticationPrincipal PrincipalDetails principalDetails){
+        Member member = principalDetails.getMember();
         Board board = boardRepository.findByBoardID(BoardID);
         model.addAttribute("member",member);
         model.addAttribute("board",board);

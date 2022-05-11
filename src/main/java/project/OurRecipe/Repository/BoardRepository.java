@@ -45,6 +45,10 @@ public class BoardRepository {
          return BoardUpdate;
 
     }
+    public void DeleteBoard(int BoardID){
+        String sql = "update Board set BoardAvailable = 0 where BoardID = ?";
+        jdbcTemplate.update(sql,BoardID);
+    }
     private RowMapper<Board> BoardRowMapper() {
         return (rs, rowNum) -> {
             Board board = new Board(rs.getString("MemberID"),

@@ -22,7 +22,9 @@ public class PageController {
     @GetMapping("/boards/page={NowPage}")
     public String page(@PathVariable int NowPage, Board board,Model model){
         List<Integer> PageBlock = new ArrayList<>();
-        int TotalPage = pageRepository.TotalBoards()/8+1;
+        int TotalPage = (int)Math.ceil((double)pageRepository.TotalBoards()/8);
+        log.info("TotalBoards={}",pageRepository.TotalBoards());
+        log.info("TotalPage={}",TotalPage);
         if(NowPage<1) {
             NowPage=1;
             return "redirect:/boards/page=1";

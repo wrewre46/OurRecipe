@@ -38,7 +38,7 @@
                             <div class="card-body p-4">
                                 <div class="text-center">
                                     <h5 class="fw-bolder"><a th:href="@{/boards/{BoardID}(BoardID=${board.BoardID})}" th:text="${board.BoardTitle}">게시물 이름</a></h5>
-                                    <a th:text="${board.MemberID}">작성자</a>
+                                    <span th:text="|작성자 : ${board.MemberNickname}|">작성자</span>
                                 </div>
                             </div>
                         </div>

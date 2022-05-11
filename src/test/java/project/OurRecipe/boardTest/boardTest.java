@@ -58,4 +58,8 @@ public class boardTest {
         System.out.println("StartPage : " + page.getStartPage());
         System.out.println("EndPage : " + page.getEndPage());
     }
+    @Test
+    void DeleteBoard(){
+        boardRepository.DeleteBoard(42);
+    }
 }

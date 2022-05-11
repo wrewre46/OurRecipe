@@ -64,9 +64,14 @@ public class LoginController {
 	@GetMapping("/login")
 	public String loginForm(HttpServletRequest request) {
 		String uri = request.getHeader("Referer");
-		if (!uri.contains("/login")) {
-			request.getSession().setAttribute("prevPage",
-					request.getHeader("Referer"));
+		try{
+			if (!uri.contains("/login")) {
+				request.getSession().setAttribute("prevPage",
+						request.getHeader("Referer"));
+				return "login/loginForm";
+			}
+		}catch (NullPointerException E){
+			return "login/loginForm";
 		}
 		return "login/loginForm";
 	}

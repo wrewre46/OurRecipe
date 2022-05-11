@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.Setter;
+import org.springframework.validation.annotation.Validated;
 
 import java.sql.Date;
 import java.sql.Time;

@@ -17,8 +17,8 @@
         <input type="text" id="BoardTitle" name="BoardTitle" th:value="${board.BoardTitle}" class="form-control" readonly>
     </div>
     <div>
-        <label for="MemberID">작성자</label>
-        <input type="text" id="MemberID" name="MemberID" th:value="${board.MemberID}" class="form-control" readonly>
+        <label for="MemberNickname">작성자</label>
+        <input type="text" id="MemberNickname" name="MemberID" th:value="${board.MemberNickname}" class="form-control" readonly>
     </div>
     <div>
         <label for="WriteDate">작성일</label>
@@ -40,12 +40,28 @@
         <div class="col">
             <button
                     th:if="${board.MemberID} == ${member.MemberID}"
-                    class="w-100 btn btn-primary btn-lg"
+                    class="btn btn-primary btn-lg"
                     th:onclick="|location.href='@{/boards/{BoardID}/edit(BoardID=${board.BoardID})}'|"
                     type="button">수정하기</button>
+            <script th:inline="javascript" >
+                function confirm_delete() {
+                    if(confirm("삭제 하시겠습니까?")){
+                     alert('삭제가 완료되었습니다');
+                     var boardID = /*[[${board.BoardID}]]*/
+                     location.href="/boards/"+boardID+"/delete";
+                    }
+
+                }
+            </script>
+            <button
+                    th:if="${board.MemberID} == ${member.MemberID}"
+                    class="btn btn-primary btn-lg"
+                    th:href="@{/boards/{BoardID}/delete(BoardID=${board.BoardID})}"
+                    th:onclick="return confirm_delete()"
+                    type="button">삭제하기</button>
         </div>
         <div class="col">
-            <button class="w-100 btn btn-secondary btn-lg"
+            <button class="btn btn-secondary btn-lg"
                     th:onclick="|location.href='@{/boards/page={page}(page=${page})}'|"
                     type="button">목록으로</button><br><br>
         </div>

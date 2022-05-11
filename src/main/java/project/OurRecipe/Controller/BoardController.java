@@ -32,15 +32,10 @@ public class BoardController {
     @Autowired private PageRepository pageRepository;
     @Autowired private MemberRepository memberRepository;
 
-    @GetMapping("/username")
-    @ResponseBody
-    public String currentUserName(Principal principal) {
-        return principal.getName();
-    }
     @GetMapping()
     public String Boards(Model model){
         List<Integer> PageBlock = new ArrayList<>();
-        Page page = new Page(1,pageRepository.TotalBoards()/8 + 1);
+        Page page = new Page(1,(int)Math.ceil((double)pageRepository.TotalBoards()/8));
         for(int i = page.getStartPage(); i<=page.getEndPage();i++){
             PageBlock.add(i);
         }
@@ -94,7 +89,17 @@ public class BoardController {
         redirectAttributes.addAttribute("BoardID", board.getBoardID());
         return "redirect:/boards/{BoardID}";
     }
+    @Secured("ROLE_USER")
+    @GetMapping("/{BoardID}/delete")
+    public String BoardDelete(@PathVariable int BoardID,Model model,RedirectAttributes redirectAttributes){
+        int Page = (int)Math.ceil((double)(pageRepository.FindPage(BoardID)/8))+1;
+        boardRepository.DeleteBoard(BoardID);
+        model.addAttribute("BoardID", BoardID);
+        redirectAttributes.addAttribute("Page", Page);
+        return "redirect:/boards/page={Page}";
+    }
 
+    @Secured("ROLE_USER")
     @GetMapping("/{BoardID}/edit")
     public String BoardEdit(@PathVariable int BoardID, Model model, @AuthenticationPrincipal PrincipalDetails principalDetails){
         Member member = principalDetails.getMember();
@@ -104,7 +109,7 @@ public class BoardController {
         if(member.getMemberID().equals(board.getMemberID())){
             return "board/edit";
         }
-        else return "error";
+        else return "redirect:/boards/{BoardID}";
     }
     @Secured("ROLE_USER")
     @PostMapping("/{BoardID}/edit")

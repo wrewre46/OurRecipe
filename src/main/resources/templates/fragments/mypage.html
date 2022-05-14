@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<div class="mypage" th:fragment="mypage">
+    <head>
+        <meta charset="utf-8">
+        <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
+        <link th:href="@{/css/mypage_styles.css}" rel="stylesheet" />
+        <Title>OurRecipe Board</Title>
+    </head>
+    <body>
+        <div class="d-flex" id="wrapper">
+            <!-- Sidebar-->
+            <div class="border-end bg-white" id="sidebar-wrapper">
+                <div class="list-group list-group-flush">
+                    <a class="list-group-item list-group-item-action list-group-item-light p-4" th:href="@{/MyPage}">회원 정보</a>
+                    <a class="list-group-item list-group-item-action list-group-item-light p-4"
+                       th:href="@{/MyPage/NicknameForm}">닉네임 변경</a>
+                    <a class="list-group-item list-group-item-action list-group-item-light p-4" href="#!">작성한 글</a>
+                    <a class="list-group-item list-group-item-action list-group-item-light p-4" href="#!">추천한 글</a>
+                </div>
+            </div>
+        </div>
+    </body>
+</div>
+</html>

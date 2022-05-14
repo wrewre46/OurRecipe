@@ -45,9 +45,21 @@ public class BoardRepository {
          return BoardUpdate;
 
     }
+    public void UpdateNickname(String Nickname, String MemberID){
+        String sql ="update board set MemberNickname = ? where MemberID = ?";
+        jdbcTemplate.update(sql,Nickname, MemberID);
+    }
     public void DeleteBoard(int BoardID){
         String sql = "update Board set BoardAvailable = 0 where BoardID = ?";
         jdbcTemplate.update(sql,BoardID);
+    }
+    public int GetBoardRecommendCount(int BoardID){
+        String sql = "select RecommendCount from board where BoardID = ?";
+        return jdbcTemplate.queryForObject(sql, Integer.class, BoardID);
+    }
+    public void UpdateBoardRecommendCount(int RecommendCount , int BoardID){
+        String sql = "update Board set RecommendCount = ? where BoardID =?";
+        jdbcTemplate.update(sql,RecommendCount,BoardID);
     }
     private RowMapper<Board> BoardRowMapper() {
         return (rs, rowNum) -> {

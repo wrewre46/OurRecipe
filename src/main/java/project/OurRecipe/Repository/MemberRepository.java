@@ -31,6 +31,10 @@ public class MemberRepository {
                 member.getMemberCreateTime());
 
     }
+    public void UpdateNickname(String Nickname, String MemberID){
+        String sql ="update member set Nickname = ? where MemberID = ?";
+        jdbcTemplate.update(sql,Nickname, MemberID);
+    }
     public int MemberCount(){
         String sql = "select count(*) from Member";
         return jdbcTemplate.queryForObject(sql, Integer.class);
@@ -45,6 +49,18 @@ public class MemberRepository {
                 MemberRowMapper(), provider,providerID);
 
         return result.stream().findAny();
+    }
+    public int CountMemberID(String MemberID){
+        String sql="select count(*) from member where MemberID= ? ";
+        return jdbcTemplate.queryForObject(sql, Integer.class,MemberID);
+    }
+    public int CountMemberEmail(String Email){
+        String sql="select count(*) from member where Email= ? ";
+        return jdbcTemplate.queryForObject(sql, Integer.class,Email);
+    }
+    public int CountMemberNickname(String Nickname){
+        String sql="select count(*) from member where Nickname= ? ";
+        return jdbcTemplate.queryForObject(sql, Integer.class,Nickname);
     }
     private RowMapper<Member> MemberRowMapper() {
         return (rs, rowNum) -> {

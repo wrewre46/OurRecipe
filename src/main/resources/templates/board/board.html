@@ -8,66 +8,75 @@
     <Title>OurRecipe Board</Title>
 </head>
 <body>
-<div class="container">
-    <div class="py-5 text-center">
-        <h2>게시물</h2>
-    </div>
-    <div>
-        <label for="BoardTitle">글 제목</label>
-        <input type="text" id="BoardTitle" name="BoardTitle" th:value="${board.BoardTitle}" class="form-control" readonly>
-    </div>
-    <div>
-        <label for="MemberNickname">작성자</label>
-        <input type="text" id="MemberNickname" name="MemberID" th:value="${board.MemberNickname}" class="form-control" readonly>
-    </div>
-    <div>
-        <label for="WriteDate">작성일</label>
-        <input type="text" id="WriteDate" name="WriteDate" th:value="${board.WriteDate}"class="form-control" readonly>
-    </div>
-    <div>
-        <label for="WriteTime">작성 시간</label>
-        <input type="text" id="WriteTime" name="WriteTime" th:value="${board.WriteTime}" class="form-control" readonly>
-    </div>
-    <div>
-        <label for="BoardContent">글 내용</label>
-        <textarea type="text" id="BoardContent" name="BoardContent"  style="height:400px;"
-                  th:text="${board.BoardContent}"  class="form-control" readonly></textarea>
+    <div class="container">
+        <div class="py-5 text-center">
+            <h2>게시물</h2>
+        </div>
+        <div>
+            <label for="BoardTitle">글 제목</label>
+            <input type="text" id="BoardTitle" name="BoardTitle" th:value="${board.BoardTitle}" class="form-control" readonly>
+        </div>
+        <div>
+            <label for="MemberNickname">작성자</label>
+            <input type="text" id="MemberNickname" name="MemberNickname" th:value="${board.MemberNickname}" class="form-control" readonly>
+        </div>
+        <div>
+            <label for="WriteDate">작성일</label>
+            <input type="text" id="WriteDate" name="WriteDate" th:value="${board.WriteDate}"class="form-control" readonly>
+        </div>
+        <div>
+            <label for="WriteTime">작성 시간</label>
+            <input type="text" id="WriteTime" name="WriteTime" th:value="${board.WriteTime}" class="form-control" readonly>
+        </div>
+        <div>
+            <label for="BoardContent">글 내용</label>
+            <textarea type="text" id="BoardContent" name="BoardContent"  style="height:400px;"
+                      th:text="${board.BoardContent}"  class="form-control" readonly></textarea>
+        </div>
 
 
-    </div>
-    <hr class="my-4">
-    <div class="row">
-        <div class="col">
+
+
+        <div class="row">
+            <div class="col">
+                <div class="pagination justify-content-center" >
+                    <button
+                            th:onclick="|location.href='@{/boards/{BoardID}/recommend(BoardID=${board.BoardID})}'|"
+                            type="button"
+                            >추천</button>
+                    <span th:text="${board.RecommendCount}"></span>
+                </div>
             <button
                     th:if="${board.MemberID} == ${member.MemberID}"
-                    class="btn btn-primary btn-lg"
+                    class="btn btn-primary float-end cols-mr-3"
                     th:onclick="|location.href='@{/boards/{BoardID}/edit(BoardID=${board.BoardID})}'|"
-                    type="button">수정하기</button>
+                    type="button">수정
+            </button>
             <script th:inline="javascript" >
-                function confirm_delete() {
-                    if(confirm("삭제 하시겠습니까?")){
-                     alert('삭제가 완료되었습니다');
-                     var boardID = /*[[${board.BoardID}]]*/
-                     location.href="/boards/"+boardID+"/delete";
+                    function confirm_delete() {
+                        if(confirm("삭제 하시겠습니까?")){
+                         alert('삭제가 완료되었습니다.');
+                         var boardID = /*[[${board.BoardID}]]*/
+                         location.href="/boards/"+boardID+"/delete";
+                        }
                     }
-
-                }
             </script>
             <button
                     th:if="${board.MemberID} == ${member.MemberID}"
-                    class="btn btn-primary btn-lg"
+                    class="btn btn-primary float-end cols-mr-3"
                     th:href="@{/boards/{BoardID}/delete(BoardID=${board.BoardID})}"
                     th:onclick="return confirm_delete()"
-                    type="button">삭제하기</button>
-        </div>
-        <div class="col">
-            <button class="btn btn-secondary btn-lg"
-                    th:onclick="|location.href='@{/boards/page={page}(page=${page})}'|"
-                    type="button">목록으로</button><br><br>
-        </div>
+                    type="button">삭제
+            </button>
 
-    </div>
-</div> <!-- /container -->
+            <button class="btn btn-secondary float-end cols-mr-3"
+                    th:onclick="|location.href='@{/boards/page={page}(page=${page})}'|"
+                    type="button">목록
+            </button>
+
+            </div>
+        </div>
+    </div> <!-- /container -->
 </body>
 <footer th:replace="fragments/footer :: footer"></footer>
 </html>

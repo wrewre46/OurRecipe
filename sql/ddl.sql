@@ -18,7 +18,7 @@ create table ourrecipe.member
     MemberID Varchar(2048) not null,
     Password Varchar(2048) not null,
     Email varchar(30),
-    Nickname varchar(30),
+    Nickname varchar(2048),
     Role varchar(20) not null,
     Provider varchar(20),
     ProviderID varchar(2048),

@@ -5,6 +5,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.sql.Date;
 import java.sql.Time;
 
@@ -24,13 +26,13 @@ public class Member {
     private Time MemberCreateTime;
 
     @Builder
-    public Member(int ID,String MemberID, String Password, String Email, String NickName,String Role, String Provider, String ProviderID,
+    public Member(int ID,String MemberID, String Password, String Email, String Nickname,String Role, String Provider, String ProviderID,
                   Date MemberCreateDate, Time MemberCreateTime) {
         this.ID=ID;
         this.MemberID = MemberID;
         this.Password = Password;
         this.Email = Email;
-        this.Nickname=NickName;
+        this.Nickname=Nickname;
         this.Role = Role;
         this.Provider = Provider;
         this.ProviderID = ProviderID;

@@ -42,7 +42,7 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
 		// Attribute를 파싱해서 공통 객체로 묶는다. 관리가 편함.
 		OAuth2UserInfo oAuth2UserInfo = null;
 		if (userRequest.getClientRegistration().getRegistrationId().equals("google")) {
-			System.out.println("구글 로그인 요청~~");
+			System.out.println("구글 로그인 요청");
 			oAuth2UserInfo = new GoogleUserInfo(oAuth2User.getAttributes());
 		}else {
 			System.out.println("구글만 지원 가능합니다.");
@@ -64,6 +64,7 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
 			member = Member.builder()
 					.ID(memberRepository.MemberCount()+1)
 					.MemberID(oAuth2UserInfo.getProvider() + "_" + oAuth2UserInfo.getProviderId())
+					.Nickname(oAuth2UserInfo.getProvider() + "_" + oAuth2UserInfo.getProviderId())
 					.Password("NULL")
 					.Email(oAuth2UserInfo.getEmail())
 					.Role("ROLE_USER")

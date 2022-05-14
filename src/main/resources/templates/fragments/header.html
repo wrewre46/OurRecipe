@@ -31,8 +31,9 @@
                 </ul>
                 <div sec:authorize="isAuthenticated()">
                     <form class="d-flex">
+<!--                        <span th:text="${member.Nickname}"></span>-->
                         <button class="btn btn-outline-dark" th:onclick="|location.href='@{/logout}'|" type="button">로그아웃</button>
-                        <button class="btn btn-outline-dark" th:onclick="|location.href='@{/{MemberID}'|" type="button">마이페이지</button>
+                        <button class="btn btn-outline-dark" th:onclick="|location.href='@{/MyPage}'|" type="button">마이페이지</button>
                     </form>
                 </div>
                 <div sec:authorize="isAnonymous()">

@@ -62,4 +62,10 @@ public class boardTest {
     void DeleteBoard(){
         boardRepository.DeleteBoard(42);
     }
+    @Test
+    void RecommendCount(){
+        System.out.println(boardRepository.GetBoardRecommendCount(30));
+        boardRepository.UpdateBoardRecommendCount(3,30);
+        System.out.println(boardRepository.GetBoardRecommendCount(30));
+    }
 }

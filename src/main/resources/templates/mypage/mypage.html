@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/header :: header">
+</head>
+<body>
+    <div class="d-flex" id="wrapper">
+        <div class="content" th:replace="fragments/mypage :: mypage"></div>
+        <div class="content content-justify-center" >
+            <span>환영합니다.</span><br>
+            <span th:text="|회원 ID = ${member.MemberID}|"></span><br>
+            <span th:text="|닉네임 = ${member.Nickname}|"></span><br>
+        </div>
+    </div>
+</body>
+<footer th:replace="fragments/footer :: footer"></footer>
+</html>

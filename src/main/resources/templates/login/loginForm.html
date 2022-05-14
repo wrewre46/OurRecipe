@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
 	<header th:replace="fragments/header :: header"></header>
 	<meta charset="utf-8">
@@ -15,13 +16,15 @@
 	<form action="/login" method="post">
 		<h2 class="sr-only">Login Form</h2>
 		<div class="illustration"><i class="icon ion-ios-navigate"></i></div>
+		<span>${requestScope.loginFailMsg}</span>
 		<div class="form-group"><input class="form-control" type="text" name="username" placeholder="아이디"></div>
 		<div class="form-group"><input class="form-control" type="password" name="password" placeholder="비밀번호"></div>
 		<div class="form-group"><button class="btn btn-primary btn-block" type="submit">Log In</button></div>
 		<div class="mx-3 my-2 py-2 bordert">
 			<div class="text-center py-3"><a th:href="@{/oauth2/authorization/google}">
 			<img src="https://www.freepnglogos.com/uploads/google-logo-png/google-logo-png-suite-everything-you-need-know-about-google-newest-0.png"> </a></div>
-		<div class="offset-md-2 my-2 py-2 "><a th:href="@{/join}">회원가입을 아직 하지 않으셨나요?</a></div>
+			<div class="offset-md-0 my-0 py-0 ">처음 방문하셨다면 닉네임을 수정해주세요!</div>
+		<div class="offset-md-1 my-2 py-2 "><a th:href="@{/join}">회원가입을 아직 하지 않으셨나요?</a></div>
 		</div>
 	</form>
 

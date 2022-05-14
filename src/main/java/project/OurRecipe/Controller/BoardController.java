@@ -15,6 +15,7 @@ import project.OurRecipe.Domain.Page;
 import project.OurRecipe.Repository.BoardRepository;
 import project.OurRecipe.Repository.MemberRepository;
 import project.OurRecipe.Repository.PageRepository;
+import project.OurRecipe.Service.BoardService;
 
 import javax.annotation.security.PermitAll;
 import java.security.Principal;
@@ -31,6 +32,7 @@ public class BoardController {
     @Autowired private BoardRepository boardRepository;
     @Autowired private PageRepository pageRepository;
     @Autowired private MemberRepository memberRepository;
+    @Autowired private BoardService boardService;
 
     @GetMapping()
     public String Boards(Model model){
@@ -110,6 +112,12 @@ public class BoardController {
             return "board/edit";
         }
         else return "redirect:/boards/{BoardID}";
+    }
+    @Secured("ROLE_USER")
+    @GetMapping("/{BoardID}/recommend")
+    public String Recommend(@PathVariable int BoardID){
+        boardService.BoardRecommend(BoardID);
+        return "redirect:/boards/{BoardID}";
     }
     @Secured("ROLE_USER")
     @PostMapping("/{BoardID}/edit")

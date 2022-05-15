@@ -25,13 +25,35 @@
 <!--			<p class="field-error" th:each="err : ${#fields.globalErrors()}" th:text="${err}">전체 오류 메시지</p>-->
 <!--		</div>-->
 		<div class="form-group">
-			<input class="form-control" type="text"  name="MemberID" placeholder="아이디">
-<!--		<div class="field-error" th:errors="*{MemberID}">아이디 오류</div>-->
-
+			<label for="MemberID" th:text="#{label.member.MemberID}">회원 ID</label>
+			<input class="form-control" id="MemberID" type="text"
+				   th:field="*{MemberID}"
+				   th:errorclass="field-error"
+				   placeholder="아이디">
+			<div class="field-error" th:errors="*{MemberID}">아이디 오류</div>
 		</div>
-		<div class="form-group"><input class="form-control" type="Password" name="Password" placeholder="비밀번호"></div>
-		<div class="form-group"><input class="form-control" type="Email" name="Email" placeholder="E-mail"></div>
-		<div class="form-group"><input class="form-control" type="text" name="Nickname" placeholder="닉네임"></div>
+		<div class="form-group">
+			<label for="Password" th:text="#{label.member.Password}">비밀번호</label>
+			<input class="form-control" id="Password" type="text"
+				   th:field="*{Password}"
+				   placeholder="비밀번호"></div>
+<!--				   th:errorclass="field-error"-->
+
+			<div class="field-error" th:errors="*{Password}">비밀번호 오류</div>
+		<div class="form-group">
+			<label for="Email" th:text="#{label.member.Email}">비밀번호</label>
+			<input class="form-control" id="Email" type="text"
+				   th:field="*{Email}"
+				   placeholder="E-mail"></div>
+<!--				   th:errorclass="field-error" -->
+
+			<div class="field-error" th:errors="*{Email}">이메일 오류</div>
+		<div class="form-group">
+			<label for="Nickname" th:text="#{label.member.Nickname}">비밀번호</label>
+			<input class="form-control" id="Nickname" type="text"
+				   th:field="*{Nickname}" placeholder="닉네임"></div>
+<!--				   th:errorclass="field-error" -->
+			<div class="field-error" th:errors="*{Nickname}">닉네임 오류</div>
 		<div class="form-group"><button class="btn btn-primary btn-block" type="submit">Join !</button></div>
 
 	</form>

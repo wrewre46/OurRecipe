@@ -15,9 +15,13 @@ import java.sql.Time;
 @Component
 public class Member {
     private int ID;
+    @NotBlank
     private String MemberID;
+    @NotBlank
     private String Password;
+    @NotBlank
     private String Email;
+    @NotBlank
     private String Nickname;
     private String Role;
     private String Provider;

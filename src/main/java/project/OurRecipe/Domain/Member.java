@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.sql.Date;
@@ -20,6 +21,7 @@ public class Member {
     @NotBlank
     private String Password;
     @NotBlank
+    @Email(message = "이메일 형식에 맞지 않습니다.")
     private String Email;
     @NotBlank
     private String Nickname;

@@ -5,14 +5,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.*;
 import project.OurRecipe.Config.Auth.PrincipalDetails;
 import project.OurRecipe.Domain.Member;
 import project.OurRecipe.Repository.BoardRepository;
 import project.OurRecipe.Repository.MemberRepository;
+import project.OurRecipe.Validation.MemberValidation;
 
 @Slf4j
 @Controller
@@ -20,7 +21,13 @@ import project.OurRecipe.Repository.MemberRepository;
 public class MyPageController {
     @Autowired private BoardRepository boardRepository;
     @Autowired private MemberRepository memberRepository;
+    @Autowired private MemberValidation memberValidation;
 
+    @InitBinder
+    public void init(WebDataBinder dataBinder) {
+        log.info("init binder {}", dataBinder);
+        dataBinder.addValidators(memberValidation);
+    }
     @GetMapping
     public String MyPage(@AuthenticationPrincipal PrincipalDetails principalDetails, Model model){
         Member member = principalDetails.getMember();
@@ -36,7 +43,11 @@ public class MyPageController {
     }
 
     @PostMapping("/NicknameForm")
-    public String UpdateNickname(@ModelAttribute Member member, @AuthenticationPrincipal PrincipalDetails principalDetails){
+    public String UpdateNickname(@Validated @ModelAttribute Member member, BindingResult bindingResult, @AuthenticationPrincipal PrincipalDetails principalDetails){
+        if(bindingResult.hasErrors()){
+            log.info("error={}", bindingResult);
+            return "mypage/nicknameForm";
+        }
         Member Spare_member = principalDetails.getMember();
         log.info("MemberID={}",member.getMemberID());
         log.info("MemberNickname={}", member.getNickname());

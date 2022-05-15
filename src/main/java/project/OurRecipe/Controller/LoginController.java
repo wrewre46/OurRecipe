@@ -13,6 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import project.OurRecipe.Config.Auth.PrincipalDetails;
 import project.OurRecipe.Domain.Member;
@@ -33,6 +34,11 @@ public class LoginController {
 	@Autowired private MemberRepository memberRepository;
 	@Autowired private BCryptPasswordEncoder bCryptPasswordEncoder;
 	@Autowired private MemberValidation memberValidation;
+	@InitBinder
+	public void init(WebDataBinder dataBinder) {
+		log.info("init binder {}", dataBinder);
+		dataBinder.addValidators(memberValidation);
+	}
 	@GetMapping("/test/login")
 	public @ResponseBody String testLogin(Authentication authentication,
 			@AuthenticationPrincipal PrincipalDetails userDetails) {
@@ -61,8 +67,11 @@ public class LoginController {
 	}
 	
 	@GetMapping("/login")
-	public String loginForm(HttpServletRequest request) {
-
+	public String loginForm(@RequestParam(value = "error", required = false)String error,
+							@RequestParam(value = "exception", required = false)String exception,
+							Model model, HttpServletRequest request) {
+			model.addAttribute("error", error);
+			model.addAttribute("exception", exception);
 			String uri = request.getHeader("Referer");
 			try {
 
@@ -84,8 +93,7 @@ public class LoginController {
 		return "login/joinForm";
 	}
 	@PostMapping("/join")
-	public String join(@Validated @ModelAttribute Member member, BindingResult bindingResult, Model model) {
-		memberValidation.validate(member,bindingResult);
+	public String join(@Validated @ModelAttribute Member member, BindingResult bindingResult) {
 		if(bindingResult.hasErrors()){
 			log.info("error={}", bindingResult);
 			return "login/joinForm";

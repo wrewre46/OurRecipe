@@ -34,14 +34,14 @@
 		</div>
 		<div class="form-group">
 			<label for="Password" th:text="#{label.member.Password}">비밀번호</label>
-			<input class="form-control" id="Password" type="text"
+			<input class="form-control" id="Password" type="password"
 				   th:field="*{Password}"
 				   placeholder="비밀번호"></div>
 <!--				   th:errorclass="field-error"-->
 
 			<div class="field-error" th:errors="*{Password}">비밀번호 오류</div>
 		<div class="form-group">
-			<label for="Email" th:text="#{label.member.Email}">비밀번호</label>
+			<label for="Email" th:text="#{label.member.Email}">이메일</label>
 			<input class="form-control" id="Email" type="text"
 				   th:field="*{Email}"
 				   placeholder="E-mail"></div>
@@ -49,7 +49,7 @@
 
 			<div class="field-error" th:errors="*{Email}">이메일 오류</div>
 		<div class="form-group">
-			<label for="Nickname" th:text="#{label.member.Nickname}">비밀번호</label>
+			<label for="Nickname" th:text="#{label.member.Nickname}">닉네임</label>
 			<input class="form-control" id="Nickname" type="text"
 				   th:field="*{Nickname}" placeholder="닉네임"></div>
 <!--				   th:errorclass="field-error" -->

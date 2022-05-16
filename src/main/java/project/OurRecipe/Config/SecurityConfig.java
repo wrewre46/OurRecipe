@@ -38,8 +38,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 				.maxSessionsPreventsLogin(false)
 				.expiredUrl("/")
 				.sessionRegistry(sessionRegistry());
-
-
 		http.csrf().disable();
 		http.authorizeRequests()
 			.antMatchers("/admin/**").access("hasRole('ROLE_ADMIN')")

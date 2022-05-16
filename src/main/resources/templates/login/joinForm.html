@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
 	<header th:replace="fragments/header :: header"></header>
 	<meta charset="utf-8">
@@ -17,47 +18,56 @@
 </head>
 
 <body>
-<div class="login-clean">
-	<form action="/join"  th:object="${member}" method="post">
-		<h2 class="sr-only">Login Form</h2>
-		<div class="illustration"><i class="icon ion-ios-navigate"></i></div>
-<!--		<div th:if="${#fields.hasGlobalErrors()}">-->
-<!--			<p class="field-error" th:each="err : ${#fields.globalErrors()}" th:text="${err}">전체 오류 메시지</p>-->
-<!--		</div>-->
-		<div class="form-group">
-			<label for="MemberID" th:text="#{label.member.MemberID}">회원 ID</label>
-			<input class="form-control" id="MemberID" type="text"
-				   th:field="*{MemberID}"
-				   th:errorclass="field-error"
-				   placeholder="아이디">
-			<div class="field-error" th:errors="*{MemberID}">아이디 오류</div>
+<div sec:authorize="isAnonymous()">
+	<div class="login-clean">
+		<form action="/join"  th:object="${member}" method="post">
+			<h2 class="sr-only">Login Form</h2>
+			<div class="illustration"><i class="icon ion-ios-navigate"></i></div>
+	<!--		<div th:if="${#fields.hasGlobalErrors()}">-->
+	<!--			<p class="field-error" th:each="err : ${#fields.globalErrors()}" th:text="${err}">전체 오류 메시지</p>-->
+	<!--		</div>-->
+			<div class="form-group">
+				<label for="MemberID" th:text="#{label.member.MemberID}">회원 ID</label>
+				<input class="form-control" id="MemberID" type="text"
+					   th:field="*{MemberID}"
+					   th:errorclass="field-error"
+					   placeholder="아이디">
+				<div class="field-error" th:errors="*{MemberID}">아이디 오류</div>
+			</div>
+			<div class="form-group">
+				<label for="Password" th:text="#{label.member.Password}">비밀번호</label>
+				<input class="form-control" id="Password" type="password"
+					   th:field="*{Password}"
+					   placeholder="비밀번호"></div>
+	<!--				   th:errorclass="field-error"-->
+
+				<div class="field-error" th:errors="*{Password}">비밀번호 오류</div>
+			<div class="form-group">
+				<label for="Email" th:text="#{label.member.Email}">이메일</label>
+				<input class="form-control" id="Email" type="text"
+					   th:field="*{Email}"
+					   placeholder="E-mail"></div>
+	<!--				   th:errorclass="field-error" -->
+
+				<div class="field-error" th:errors="*{Email}">이메일 오류</div>
+			<div class="form-group">
+				<label for="Nickname" th:text="#{label.member.Nickname}">닉네임</label>
+				<input class="form-control" id="Nickname" type="text"
+					   th:field="*{Nickname}" placeholder="닉네임"></div>
+	<!--				   th:errorclass="field-error" -->
+				<div class="field-error" th:errors="*{Nickname}">닉네임 오류</div>
+			<div class="form-group"><button class="btn btn-primary btn-block" type="submit">Join !</button></div>
+
+		</form>
+
+	</div>
+</div>
+<div sec:authorize="isAuthenticated()">
+	<div class="login-clean">
+		<div class="text-center">
+			<span>잘못된 페이지입니다.</span>
 		</div>
-		<div class="form-group">
-			<label for="Password" th:text="#{label.member.Password}">비밀번호</label>
-			<input class="form-control" id="Password" type="password"
-				   th:field="*{Password}"
-				   placeholder="비밀번호"></div>
-<!--				   th:errorclass="field-error"-->
-
-			<div class="field-error" th:errors="*{Password}">비밀번호 오류</div>
-		<div class="form-group">
-			<label for="Email" th:text="#{label.member.Email}">이메일</label>
-			<input class="form-control" id="Email" type="text"
-				   th:field="*{Email}"
-				   placeholder="E-mail"></div>
-<!--				   th:errorclass="field-error" -->
-
-			<div class="field-error" th:errors="*{Email}">이메일 오류</div>
-		<div class="form-group">
-			<label for="Nickname" th:text="#{label.member.Nickname}">닉네임</label>
-			<input class="form-control" id="Nickname" type="text"
-				   th:field="*{Nickname}" placeholder="닉네임"></div>
-<!--				   th:errorclass="field-error" -->
-			<div class="field-error" th:errors="*{Nickname}">닉네임 오류</div>
-		<div class="form-group"><button class="btn btn-primary btn-block" type="submit">Join !</button></div>
-
-	</form>
-
+	</div>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/js/bootstrap.bundle.min.js"></script>

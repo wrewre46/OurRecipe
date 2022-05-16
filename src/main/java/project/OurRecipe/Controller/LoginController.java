@@ -3,10 +3,8 @@ package project.OurRecipe.Controller;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Controller;
@@ -19,7 +17,6 @@ import project.OurRecipe.Config.Auth.PrincipalDetails;
 import project.OurRecipe.Domain.Member;
 import project.OurRecipe.Repository.MemberRepository;
 import project.OurRecipe.Validation.MemberValidation;
-
 import javax.servlet.http.HttpServletRequest;
 import java.sql.Date;
 import java.sql.Time;
@@ -34,6 +31,7 @@ public class LoginController {
 	@Autowired private MemberRepository memberRepository;
 	@Autowired private BCryptPasswordEncoder bCryptPasswordEncoder;
 	@Autowired private MemberValidation memberValidation;
+	@Autowired private PrincipalDetails principalDetails;
 	@InitBinder
 	public void init(WebDataBinder dataBinder) {
 		log.info("init binder {}", dataBinder);
@@ -108,19 +106,13 @@ public class LoginController {
 		memberRepository.MemberSave(member);
 		return "redirect:/login";
 	}
-//	@GetMapping("/*")
-//	public String header(@AuthenticationPrincipal PrincipalDetails principalDetails, Model model){
-//		Member member = principalDetails.getMember();
-//		log.info("MemberNickname={}", member.getNickname());
-//		model.addAttribute("member", member);
-//		return "fragments/header";
-//
-//	}
 	@Secured("ROLE_ADMIN")//접근 권한 없으면 이 함수를 실행시킬 수 없다.
 	@GetMapping("/admin")
 	public String admin() {
 		return "admin";
 	}
+
+
 
 }
 

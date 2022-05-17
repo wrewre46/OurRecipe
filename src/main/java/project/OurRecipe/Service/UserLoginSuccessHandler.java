@@ -1,17 +1,19 @@
 package project.OurRecipe.Service;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.savedrequest.HttpSessionRequestCache;
 import org.springframework.security.web.savedrequest.RequestCache;
 import org.springframework.security.web.savedrequest.SavedRequest;
 import org.springframework.stereotype.Service;
-
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+
+@Slf4j
 @Service
 public class UserLoginSuccessHandler implements AuthenticationSuccessHandler {
     @Override
@@ -51,5 +53,6 @@ public class UserLoginSuccessHandler implements AuthenticationSuccessHandler {
         if(uri.equals("http://localhost:8080/join")) uri="http://localhost:8080";
         // 세 가지 케이스에 따른 URI 주소로 리다이렉트
         response.sendRedirect(uri);
+
     }
 }

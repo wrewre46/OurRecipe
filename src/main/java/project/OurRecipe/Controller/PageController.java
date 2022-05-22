@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import project.OurRecipe.Domain.Board;
 import project.OurRecipe.Domain.Page;
+import project.OurRecipe.Repository.BoardRepository;
 import project.OurRecipe.Repository.PageRepository;
 
 import java.util.ArrayList;
@@ -19,6 +20,7 @@ import java.util.Map;
 @Controller
 public class PageController {
     @Autowired PageRepository pageRepository;
+    @Autowired BoardRepository boardRepository;
     @GetMapping("/boards/page={NowPage}")
     public String page(@PathVariable int NowPage, Board board,Model model){
         List<Integer> PageBlock = new ArrayList<>();
@@ -34,7 +36,9 @@ public class PageController {
         for(int i = page.getStartPage(); i<=page.getEndPage();i++){
             PageBlock.add(i);
         }
+        List<Board> HotBoards = boardRepository.HotBoards();
         List<Board> boards = pageRepository.BoardsPerPage(page.getNowPage());
+        model.addAttribute("HotBoards",HotBoards);
         model.addAttribute("Page",page);
         model.addAttribute("PageBlock",PageBlock);
         model.addAttribute("boards",boards);

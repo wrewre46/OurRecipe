@@ -14,20 +14,50 @@
         <!-- Core theme CSS (includes Bootstrap)-->
         <link th:href="@{/css/boards_styles.css}" rel="stylesheet" />
     </head>
+    <style> .updown {
+             border: 5px solid black;
+             width: 0.1px;
+             height: 50px;
+           }
+    </style>
+
     <body>
 
         <!-- Header-->
         <header class="bg-dark py-5">
             <div class="container px-4 px-lg-5 my-5">
                 <div class="text-center text-white">
-                    <h1 class="display-4 fw-bolder">Shop in style</h1>
-                    <p class="lead fw-normal text-white-50 mb-0">With this shop hompeage template</p>
+                    <h1 class="display-4 fw-bolder">OurRecipe</h1>
+                    <p class="lead fw-normal text-white-50 mb-0">레시피 꿀팁을 공유해보세요!</p>
                 </div>
             </div>
         </header>
         <!-- Section-->
+
         <section class="py-5">
+
+
             <div class="container px-4 px-lg-5 mt-5">
+                <span style="font-size : 30px">Hot !</span>
+                <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4">
+
+                    <div class="col mb-5"  th:each="board:${HotBoards}">
+                        <div class="card h-100">
+                            <!-- Product image-->
+                            <img class="card-img-top" src=""
+                                 onerror="this.src='/assets/img/boards_default.jpg'">
+                            <!-- Product details-->
+                            <div class="card-body p-4">
+                                <div class="text-center">
+                                    <h5 class="fw-bolder"><a th:href="@{/boards/{BoardID}(BoardID=${board.BoardID})}" th:text="${board.BoardTitle}">게시물 이름</a></h5>
+                                    <span th:text="|작성자 : ${board.MemberNickname}|">작성자</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <hr style="border: solid 2px red;">
+                <span style="font-size : 30px">전체 게시물</span>
                 <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4">
                     <div class="col mb-5"  th:each="board:${boards}">
                         <div class="card h-100">

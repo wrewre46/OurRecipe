@@ -45,6 +45,10 @@ public class BoardRepository {
          return BoardUpdate;
 
     }
+    public List<Board> HotBoards(){
+        String sql ="select * from board where BoardAvailable = 1 ORDER BY RecommendCount DESC LIMIT 4";
+        return jdbcTemplate.query(sql,BoardRowMapper());
+    }
     public void UpdateNickname(String Nickname, String MemberID){
         String sql ="update board set MemberNickname = ? where MemberID = ?";
         jdbcTemplate.update(sql,Nickname, MemberID);

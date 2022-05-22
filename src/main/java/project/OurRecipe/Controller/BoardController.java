@@ -41,10 +41,12 @@ public class BoardController {
         for(int i = page.getStartPage(); i<=page.getEndPage();i++){
             PageBlock.add(i);
         }
+        List<Board> HotBoards = boardRepository.HotBoards();
         List<Board> boards = pageRepository.BoardsPerPage(page.getNowPage());
         model.addAttribute("Page",page);
         model.addAttribute("PageBlock",PageBlock);
         model.addAttribute("boards",boards);
+        model.addAttribute("HotBoards", HotBoards);
         return "board/boards";
     }
     @GetMapping("/{BoardID}")

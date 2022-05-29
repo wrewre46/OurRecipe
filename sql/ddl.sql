@@ -27,3 +27,10 @@ create table ourrecipe.member
     primary key(ID)
 
 );
+create table ourrecipe.recommend
+(
+    MemberID VARCHAR(20) NOT NULL,
+    MemberNickname varchar(20) ,
+    BoardID int ,
+	CheckRecommend int default 1
+);

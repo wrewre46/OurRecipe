@@ -26,7 +26,7 @@
                     <label for="Nickname" th:text="#{label.member.Nickname}">닉네임</label>
 
                     <input class="form-control" id="Nickname" type="text"
-                           th:field="*{Nickname}" placeholder="닉네임">
+                           th:field="*{Nickname}" >
                 </div>
                 <div class="field-error"  th:errors="*{Nickname}">닉네임 오류</div>
                 <script th:inline="javascript" >

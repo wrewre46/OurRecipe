@@ -6,15 +6,12 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import project.OurRecipe.Config.Auth.PrincipalDetails;
-import project.OurRecipe.Domain.Board;
-import project.OurRecipe.Domain.Member;
-import project.OurRecipe.Domain.Page;
-import project.OurRecipe.Repository.BoardRepository;
-import project.OurRecipe.Repository.MemberRepository;
-import project.OurRecipe.Repository.PageRepository;
+import project.OurRecipe.Domain.*;
+import project.OurRecipe.Repository.*;
 import project.OurRecipe.Service.BoardService;
 
 import javax.annotation.security.PermitAll;
@@ -32,7 +29,9 @@ public class BoardController {
     @Autowired private BoardRepository boardRepository;
     @Autowired private PageRepository pageRepository;
     @Autowired private MemberRepository memberRepository;
+    @Autowired private BoardCommentRepository boardCommentRepository;
     @Autowired private BoardService boardService;
+    @Autowired private RecommendRepository recommendRepository;
 
     @GetMapping()
     public String Boards(Model model){
@@ -52,9 +51,12 @@ public class BoardController {
     @GetMapping("/{BoardID}")
     public String board(@PathVariable int BoardID,Model model,@AuthenticationPrincipal PrincipalDetails principalDetails){
         int Page = (int)Math.ceil((double)(pageRepository.FindPage(BoardID)/8))+1;
+        List<BoardComment> comments = boardCommentRepository.CommentAll(BoardID);
         try{
             Member member = principalDetails.getMember();
             Board board = boardRepository.findByBoardID(BoardID);
+            model.addAttribute("recommend", recommendRepository.GetCheckRecommend(BoardID, member));
+            model.addAttribute("comments", comments);
             model.addAttribute("page",Page);
             model.addAttribute("board", board);
             model.addAttribute("member",member);
@@ -62,11 +64,25 @@ public class BoardController {
         }catch (Exception E){
             Member member =new Member();
             Board board = boardRepository.findByBoardID(BoardID);
+            model.addAttribute("comments", comments);
             model.addAttribute("page",Page);
             model.addAttribute("board", board);
             model.addAttribute("member",member);
             return "board/board";
         }
+    }
+    @PostMapping("/{BoardID}")
+    public String board(@PathVariable int BoardID, @Validated @ModelAttribute BoardComment boardComment,
+                        @AuthenticationPrincipal PrincipalDetails principalDetails){
+        log.info("BoardComment={}", boardComment.getComment());
+        Member CommentMember = principalDetails.getMember();
+        boardComment.setBoardID(BoardID);
+        boardComment.setMemberID(CommentMember.getMemberID());
+        boardComment.setMemberNickname(CommentMember.getNickname());
+        boardComment.setCommentCreateDate(Date.valueOf(LocalDate.now()));
+        boardComment.setCommentCreateTime(Time.valueOf(LocalTime.now()));
+        boardCommentRepository.SaveComment(boardComment);
+        return "redirect:/boards/{BoardID}";
     }
     @Secured("ROLE_USER")
     @GetMapping("/write")
@@ -76,8 +92,9 @@ public class BoardController {
     }
     @PostMapping("/write")
     public String BoardWrite(@RequestParam String BoardTitle,
-                           @RequestParam String BoardContent,
-                           Model model, RedirectAttributes redirectAttributes,
+                             @RequestParam String BoardContent,
+                             Model model,
+                             RedirectAttributes redirectAttributes,
                              @AuthenticationPrincipal PrincipalDetails principalDetails){
         Member member = principalDetails.getMember();
         log.info("MemberID={}",member.getMemberID());
@@ -117,8 +134,10 @@ public class BoardController {
     }
     @Secured("ROLE_USER")
     @GetMapping("/{BoardID}/recommend")
-    public String Recommend(@PathVariable int BoardID){
-        boardService.BoardRecommend(BoardID);
+    public String Recommend(@PathVariable int BoardID, @AuthenticationPrincipal PrincipalDetails principalDetails){
+        Member member = principalDetails.getMember();
+        Recommend recommend = new Recommend();
+        boardService.BoardRecommend(BoardID, member, recommend);
         return "redirect:/boards/{BoardID}";
     }
     @Secured("ROLE_USER")

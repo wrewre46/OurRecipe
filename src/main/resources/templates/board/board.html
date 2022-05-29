@@ -33,18 +33,23 @@
             <textarea type="text" id="BoardContent" name="BoardContent"  style="height:400px;"
                       th:text="${board.BoardContent}"  class="form-control" readonly></textarea>
         </div>
-
-
-
-
         <div class="row">
             <div class="col">
                 <div class="pagination justify-content-center" >
-                    <button
-                            th:onclick="|location.href='@{/boards/{BoardID}/recommend(BoardID=${board.BoardID})}'|"
-                            type="button"
-                            >추천</button>
-                    <span th:text="${board.RecommendCount}"></span>
+                    <div sec:authorize="isAuthenticated()">
+                        <button
+                                th:class=" ${recommend}==1 ? 'btn btn-success' : 'btn btn-outline-dark'"
+                                th:onclick="|location.href='@{/boards/{BoardID}/recommend(BoardID=${board.BoardID})}'|"
+                                type="button"
+                                th:text="|추천 : ${board.RecommendCount}|"
+                                >추천</button>
+                    </div>
+                    <div sec:authorize="isAnonymous()">
+                        <button class="btn btn-primary"
+                                th:onclick="alert('로그인이 필요합니다.'); location.href='/login';"
+                                th:text="|추천 : ${board.RecommendCount}|"
+                                type="button">추천</button>
+                    </div>
                 </div>
             <button
                     th:if="${board.MemberID} == ${member.MemberID}"
@@ -76,7 +81,41 @@
 
             </div>
         </div>
+
+        <form th:action = "@{/boards/{BoardID}(BoardID=${board.BoardID})}" method="post">
+            <div class="row">
+                <div class="col">
+                <span>댓글 달기</span>
+                    <input type="text" id="" name="Comment" class="form-control"
+                           placeholder="댓글을 입력해주세요!" oninvalid="alert('댓글을 입력해주세요!');" required>
+                    <div sec:authorize="isAuthenticated()">
+                        <button class="btn btn-primary float-end"
+                                type="submit">등록</button>
+                    </div>
+                    <div sec:authorize="isAnonymous()">
+                        <button class="btn btn-primary float-end"
+                                th:onclick="alert('로그인이 필요합니다.'); location.href='/login';"
+                                type="button">등록</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <div class="row">
+                <div th:each="comment:${comments}">
+                    <div class="form-control col-xs-3">
+                        <span type="text" id="CommentNickname" name="CommentNickname" th:text="${comment.MemberNickname}" readonly></span><pre></pre>
+                        <span type="text" id="Comment" name="Comment" th:text="${comment.Comment}" readonly></span>
+                        <div class="col-xs-5">
+                            <button class="btn">삭제</button>
+                        </div>
+                    </div>
+                </div>
+
+
+        </div>
+
     </div> <!-- /container -->
+    <footer th:replace="fragments/footer :: footer"></footer>
 </body>
-<footer th:replace="fragments/footer :: footer"></footer>
+
 </html>

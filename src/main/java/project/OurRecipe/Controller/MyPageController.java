@@ -2,6 +2,7 @@ package project.OurRecipe.Controller;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -10,18 +11,24 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import project.OurRecipe.Config.Auth.PrincipalDetails;
+import project.OurRecipe.Domain.Board;
 import project.OurRecipe.Domain.Member;
 import project.OurRecipe.Domain.UpdateNicknameForm;
 import project.OurRecipe.Repository.BoardRepository;
 import project.OurRecipe.Repository.MemberRepository;
+import project.OurRecipe.Repository.RecommendRepository;
+
+import java.util.*;
 
 
 @Slf4j
 @Controller
 @RequestMapping("/MyPage")
+@Secured("ROLE_USER")
 public class MyPageController {
     @Autowired private BoardRepository boardRepository;
     @Autowired private MemberRepository memberRepository;
+    @Autowired private RecommendRepository recommendRepository;
 
     @GetMapping
     public String MyPage(@AuthenticationPrincipal PrincipalDetails principalDetails, Model model){
@@ -55,5 +62,23 @@ public class MyPageController {
         boardRepository.UpdateNickname(updateNicknameForm.getNickname(),present_member.getMemberID());
         model.addAttribute("message","변경이 완료되었습니다.");
         return "redirect:/MyPage/NicknameForm";
+    }
+    @GetMapping("/WrittenArticle")
+    public String WrittenArticle(@AuthenticationPrincipal PrincipalDetails principalDetails, Model model){
+        Member member = principalDetails.getMember();
+        List<Board> byMemberID =boardRepository.findByMemberID(member.getMemberID());
+        model.addAttribute("BoardMemberID", byMemberID);
+        return "mypage/writtenarticle";
+    }
+    @GetMapping("RecommendedArticle")
+    public String RecommendedArticle(@AuthenticationPrincipal PrincipalDetails principalDetails, Model model){
+        Member member = principalDetails.getMember();
+        List<Integer> RecommendedBoardID = recommendRepository.FindRecommended(member);
+        List<Board> RecommendedArticle = new ArrayList<>();
+        for (int index=RecommendedBoardID.size()-1; index>=0;index--) {
+            RecommendedArticle.add(boardRepository.findByBoardID(RecommendedBoardID.get(index)));
+        }
+        model.addAttribute("RecommendArticle", RecommendedArticle);
+        return "mypage/recommended";
     }
 }

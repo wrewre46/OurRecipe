@@ -36,6 +36,11 @@ public class BoardRepository {
 
         return jdbcTemplate.queryForObject(sql,BoardRowMapper(),BoardID);
     }
+    public List<Board> findByMemberID(String MemberID){
+        String sql = "select * from board where MemberID = ?";
+
+        return jdbcTemplate.query(sql,BoardRowMapper(),MemberID);
+    }
     public Board BoardUpdate(int BoardID, String BoardTitle, String BoardContent){
          Board BoardUpdate = findByBoardID(BoardID);
          BoardUpdate.setBoardTitle(BoardTitle);

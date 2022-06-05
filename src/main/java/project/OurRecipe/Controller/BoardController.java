@@ -2,26 +2,31 @@ package project.OurRecipe.Controller;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import project.OurRecipe.Config.Auth.PrincipalDetails;
+
 import project.OurRecipe.Domain.*;
 import project.OurRecipe.Repository.*;
 import project.OurRecipe.Service.BoardService;
 
-import javax.annotation.security.PermitAll;
-import java.security.Principal;
+import java.io.File;
+import java.io.IOException;
 import java.sql.Date;
 import java.sql.Time;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
+
 @Slf4j
 @Controller
 @RequestMapping("/boards")
@@ -32,6 +37,8 @@ public class BoardController {
     @Autowired private BoardCommentRepository boardCommentRepository;
     @Autowired private BoardService boardService;
     @Autowired private RecommendRepository recommendRepository;
+    @Value("${file.dir}")
+    private String fileDir;
 
     @GetMapping()
     public String Boards(Model model){
@@ -55,19 +62,19 @@ public class BoardController {
         try{
             Member member = principalDetails.getMember();
             Board board = boardRepository.findByBoardID(BoardID);
+            log.info("MemberID={}", member.getMemberID());
+            log.info("BoardMemberID={}", board.getMemberID());
             model.addAttribute("recommend", recommendRepository.GetCheckRecommend(BoardID, member));
             model.addAttribute("comments", comments);
             model.addAttribute("page",Page);
             model.addAttribute("board", board);
-            model.addAttribute("member",member);
             return "board/board";
         }catch (Exception E){
-            Member member =new Member();
             Board board = boardRepository.findByBoardID(BoardID);
             model.addAttribute("comments", comments);
             model.addAttribute("page",Page);
             model.addAttribute("board", board);
-            model.addAttribute("member",member);
+
             return "board/board";
         }
     }
@@ -93,9 +100,10 @@ public class BoardController {
     @PostMapping("/write")
     public String BoardWrite(@RequestParam String BoardTitle,
                              @RequestParam String BoardContent,
+                             @RequestParam MultipartFile BoardFileImgName,
                              Model model,
                              RedirectAttributes redirectAttributes,
-                             @AuthenticationPrincipal PrincipalDetails principalDetails){
+                             @AuthenticationPrincipal PrincipalDetails principalDetails) throws IOException {
         Member member = principalDetails.getMember();
         log.info("MemberID={}",member.getMemberID());
         Board board = new Board(member.getMemberID(),
@@ -105,9 +113,18 @@ public class BoardController {
                                 BoardContent,
                                 Date.valueOf(LocalDate.now()),
                                 Time.valueOf(LocalTime.now()));
+        if(!BoardFileImgName.isEmpty()){
+            UUID uuid = UUID.randomUUID();
+            String UploadName = uuid+"_"+BoardFileImgName.getOriginalFilename();
+            String fullPath = fileDir + UploadName ;
+            log.info("파일 저장 fullPath={}", fullPath);
+            board.setBoardFileImgName(UploadName);
+            BoardFileImgName.transferTo(new File(fullPath));
+        }
         boardRepository.BoardSave(board);
         model.addAttribute("board", board);
         redirectAttributes.addAttribute("BoardID", board.getBoardID());
+
         return "redirect:/boards/{BoardID}";
     }
     @Secured("ROLE_USER")

@@ -2,6 +2,7 @@ package project.OurRecipe.Controller;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -10,6 +11,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
+import org.thymeleaf.templateresolver.ITemplateResolver;
 import project.OurRecipe.Config.Auth.PrincipalDetails;
 import project.OurRecipe.Domain.Board;
 import project.OurRecipe.Domain.Member;
@@ -74,11 +76,17 @@ public class MyPageController {
     public String RecommendedArticle(@AuthenticationPrincipal PrincipalDetails principalDetails, Model model){
         Member member = principalDetails.getMember();
         List<Integer> RecommendedBoardID = recommendRepository.FindRecommended(member);
+        for (Integer integer : RecommendedBoardID) {
+            System.out.println(integer);
+        }
+        if(RecommendedBoardID.isEmpty()) return "mypage/recommended";
         List<Board> RecommendedArticle = new ArrayList<>();
-        for (int index=RecommendedBoardID.size()-1; index>=0;index--) {
+
+        for (int index = RecommendedBoardID.size() - 1; index >= 0; index--) {
             RecommendedArticle.add(boardRepository.findByBoardID(RecommendedBoardID.get(index)));
         }
         model.addAttribute("RecommendArticle", RecommendedArticle);
+
         return "mypage/recommended";
     }
 }

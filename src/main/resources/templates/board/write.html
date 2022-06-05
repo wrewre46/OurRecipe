@@ -9,11 +9,15 @@
 </head>
 <body>
 <div class="container">
-    <form th:action = "@{/boards/write}" method="post">
+    <form th:action = "@{/boards/write}" method="post" enctype="multipart/form-data">
         <div>
             <label for="BoardTitle">글 제목</label>
             <input type="text" id="BoardTitle" name="BoardTitle" class="form-control"
                    placeholder="글 제목을 입력해주세요!" oninvalid="alert('글 제목을 입력해주세요!');" required>
+        </div>
+        <div>
+            <label for="BoardFileImgName">이미지</label>
+            <input type="file" id="BoardFileImgName" name="BoardFileImgName" class="form-control">
         </div>
         <div>
             <label for="BoardContent">글 내용</label>

@@ -32,7 +32,8 @@ public class RecommendRepository {
         jdbcTemplate.update(sql,Recommend,BoardID,member.getMemberID());
     }
     public List<Integer> FindRecommended(Member member){
-        String sql = "select BoardID from Recommend where MemberID=? AND CheckRecommend = 1";
+        String sql = "select recommend.BoardID from Board right JOIN Recommend ON recommend.MemberID=?" +
+                " WHERE recommend.BoardID=board.BoardID AND board.BoardAvailable=1";
         return jdbcTemplate.queryForList(sql,Integer.class, member.getMemberID());
     }
 

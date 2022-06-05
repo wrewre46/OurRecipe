@@ -13,7 +13,6 @@ import java.sql.Time;
 
 @Data
 @NoArgsConstructor
-@Component
 public class Member {
     private int ID;
     @NotBlank

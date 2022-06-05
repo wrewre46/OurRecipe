@@ -44,7 +44,7 @@
                     <div class="col mb-5"  th:each="board:${HotBoards}">
                         <div class="card h-100">
                             <!-- Product image-->
-                            <img class="card-img-top" src=""
+                            <img class="card-img-top" th:src="@{/assets/img/{BoardFileImgName}(BoardFileImgName=${board.BoardFileImgName})}"
                                  onerror="this.src='/assets/img/boards_default.jpg'">
                             <!-- Product details-->
                             <div class="card-body p-4">
@@ -62,8 +62,8 @@
                     <div class="col mb-5"  th:each="board:${boards}">
                         <div class="card h-100">
                             <!-- Product image-->
-                            <img class="card-img-top" src=""
-                            onerror="this.src='/assets/img/boards_default.jpg'">
+                            <img class="card-img-top" th:src="@{/assets/img/{BoardFileImgName}(BoardFileImgName=${board.BoardFileImgName})}"
+                            onerror="this.src='/assets/img/boards_default.jpg'" />
                             <!-- Product details-->
                             <div class="card-body p-4">
                                 <div class="text-center">

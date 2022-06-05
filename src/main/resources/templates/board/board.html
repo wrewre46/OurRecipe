@@ -51,28 +51,30 @@
                                 type="button">추천</button>
                     </div>
                 </div>
-            <button
-                    th:if="${board.MemberID} == ${member.MemberID}"
-                    class="btn btn-primary float-end cols-mr-3"
-                    th:onclick="|location.href='@{/boards/{BoardID}/edit(BoardID=${board.BoardID})}'|"
-                    type="button">수정
-            </button>
-            <script th:inline="javascript" >
-                    function confirm_delete() {
-                        if(confirm("삭제 하시겠습니까?")){
-                         alert('삭제가 완료되었습니다.');
-                         var boardID = /*[[${board.BoardID}]]*/
-                         location.href="/boards/"+boardID+"/delete";
-                        }
-                    }
-            </script>
-            <button
-                    th:if="${board.MemberID} == ${member.MemberID}"
-                    class="btn btn-primary float-end cols-mr-3"
-                    th:href="@{/boards/{BoardID}/delete(BoardID=${board.BoardID})}"
-                    th:onclick="return confirm_delete()"
-                    type="button">삭제
-            </button>
+                <div sec:authorize="isAuthenticated()">
+                    <button
+                            th:if="${board.MemberID} == ${#authentication.principal.member.MemberID}"
+                            class="btn btn-primary float-end cols-mr-3"
+                            th:onclick="|location.href='@{/boards/{BoardID}/edit(BoardID=${board.BoardID})}'|"
+                            type="button">수정
+                    </button>
+                    <script th:inline="javascript" >
+                            function confirm_delete() {
+                                if(confirm("삭제 하시겠습니까?")){
+                                 alert('삭제가 완료되었습니다.');
+                                 var boardID = /*[[${board.BoardID}]]*/
+                                 location.href="/boards/"+boardID+"/delete";
+                                }
+                            }
+                    </script>
+                    <button
+                            th:if="${board.MemberID} == ${#authentication.principal.member.MemberID}"
+                            class="btn btn-primary float-end cols-mr-3"
+                            th:href="@{/boards/{BoardID}/delete(BoardID=${board.BoardID})}"
+                            th:onclick="return confirm_delete()"
+                            type="button">삭제
+                    </button>
+                </div>
 
             <button class="btn btn-secondary float-end cols-mr-3"
                     th:onclick="|location.href='@{/boards/page={page}(page=${page})}'|"

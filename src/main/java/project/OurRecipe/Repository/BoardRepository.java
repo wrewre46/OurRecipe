@@ -5,6 +5,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 import project.OurRecipe.Domain.Board;
+import project.OurRecipe.Domain.Member;
 
 import java.util.List;
 
@@ -13,13 +14,14 @@ public class BoardRepository {
     @Autowired private JdbcTemplate jdbcTemplate;
 
     public int BoardSave(Board board){
-        String sql = "insert into Board(MemberID,MemberNickname, BoardID, BoardTitle, BoardContent,WriteDate,WriteTime) values (?,?,?,?,?,?,?)";
+        String sql = "insert into Board(MemberID,MemberNickname, BoardID, BoardTitle, BoardContent,BoardFileImgName,WriteDate,WriteTime) values (?,?,?,?,?,?,?,?)";
         return jdbcTemplate.update(
                 sql,board.getMemberID(),
                 board.getMemberNickname(),
                 board.getBoardID(),
                 board.getBoardTitle(),
                 board.getBoardContent(),
+                board.getBoardFileImgName(),
                 board.getWriteDate(),
                 board.getWriteTime());
     }
@@ -32,14 +34,18 @@ public class BoardRepository {
         return jdbcTemplate.query("select * from board ", BoardRowMapper());
     }
     public Board findByBoardID(int BoardID){
-        String sql = "select * from board where BoardID = ?";
+        String sql = "select * from board where BoardID = ? AND BoardAvailable=1";
 
         return jdbcTemplate.queryForObject(sql,BoardRowMapper(),BoardID);
     }
     public List<Board> findByMemberID(String MemberID){
-        String sql = "select * from board where MemberID = ?";
+        String sql = "select * from board where MemberID = ? AND BoardAvailable=1";
 
         return jdbcTemplate.query(sql,BoardRowMapper(),MemberID);
+    }
+    public int GetCheckBoardAvailable(int BoardID){
+        String sql = "select BoardAvailable from board where BoardID = ?";
+        return jdbcTemplate.queryForObject(sql, Integer.class,BoardID);
     }
     public Board BoardUpdate(int BoardID, String BoardTitle, String BoardContent){
          Board BoardUpdate = findByBoardID(BoardID);
@@ -79,6 +85,7 @@ public class BoardRepository {
                     rs.getString("BoardContent"),
                     rs.getDate("WriteDate"),
                     rs.getTime("WriteTime"));
+            board.setBoardFileImgName(rs.getString("BoardFileImgName"));
             board.setRecommendCount(rs.getInt("RecommendCount"));
             board.setBoardAvailable(rs.getInt("BoardAvailable"));
             return board;

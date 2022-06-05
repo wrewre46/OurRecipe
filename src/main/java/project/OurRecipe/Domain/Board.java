@@ -20,6 +20,7 @@ public class Board {
     @NonNull
     private String BoardContent;
     private int BoardAvailable;
+    private String BoardFileImgName;
     private Date WriteDate;
     private Time WriteTime;
     private int RecommendCount;

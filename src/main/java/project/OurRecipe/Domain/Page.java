@@ -9,7 +9,6 @@ import project.OurRecipe.Repository.PageRepository;
 
 @Getter@Setter
 @NoArgsConstructor
-@Component
 public class Page {
     @Autowired PageRepository pageRepository;
     private int NowPage;
